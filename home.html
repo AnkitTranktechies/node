@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <table id="employee-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Age</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody id="employee-list"></tbody>
+    </table>
+
+    <script>
+        fetch('/api')
+            .then(response => response.json()) 
+            .then(data => {
+                const employeeTable = document.getElementById('employee-list');
+                data.data.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.id}</td>
+                        <td>${employee.name}</td>
+                        <td>${employee.class}</td>
+                        <td>${employee.age}</td>
+                        <td>${new Date(employee.created_at).toLocaleString()}</td>
+                    `;
+                    employeeTable.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
